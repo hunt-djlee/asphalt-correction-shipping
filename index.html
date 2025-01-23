@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic JSON Update</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+
+                document.getElementById('currentValue').innerText = data.currentValue;
+                document.getElementById('lastUpdated').innerText = new Date(data.lastUpdated).toLocaleString();
+            } catch (error) {
+                console.error("Error fetching JSON data:", error);
+                document.getElementById('currentValue').innerText = 'Error loading data';
+            }
+        }
+
+        window.onload = fetchData;
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md text-center">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Dashboard</h1>
+        
+        <div class="mb-6">
+            <p class="text-lg text-gray-700">Current Value:</p>
+            <p id="currentValue" class="text-4xl font-bold text-blue-600 mt-2">Loading...</p>
+        </div>
+
+        <div>
+            <p class="text-lg text-gray-700">Last Updated:</p>
+            <p id="lastUpdated" class="text-lg text-gray-500 mt-2">Loading...</p>
+        </div>
+
+        <button onclick="fetchData()" 
+            class="mt-6 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
+            Refresh Data
+        </button>
+    </div>
+
+</body>
+</html>
