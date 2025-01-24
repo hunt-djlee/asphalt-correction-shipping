@@ -26,14 +26,15 @@
                     const correctionPercentage = ((product.usual_temp_correction_factor / product.todays_temp_correction_factor) * 100).toFixed(1);
                     const gallonsDifference = Math.abs(6000 - targetGallons);
 
-                    const bgColor = tempDifference < 0 ? 'bg-blue-100 border-blue-500 text-blue-900' : 'bg-red-100 border-red-500 text-red-600';
-                    const icon = tempDifference < 0 
-                        ? '<i class="fa-solid fa-circle-arrow-down fa-lg text-blue-500"></i>' 
+                    const bgColor = tempDifference === 0 ? 'bg-green-100 border-green-500 text-green-900' : tempDifference < 0 ? 'bg-blue-100 border-blue-500 text-blue-900' : 'bg-red-100 border-red-500 text-red-600';
+                    const icon = tempDifference === 0 ? '<i class="fa-solid fa-circle-arrow-down fa-lg text-green-500"></i>' : tempDifference < 0 
+                        ? '<i class="fa-solid fa-equals fa-lg text-blue-500"></i>' 
                         : '<i class="fa-solid fa-circle-arrow-up fa-lg text-red-500"></i>';
-                    const message = tempDifference < 0 
-                        ? `COLDER` 
-                        : `HOTTER`;
+                    const message = tempDifference === 0 ? 'NORMAL' : tempDifference < 0 
+                        ? `COLDER than usual` 
+                        : `HOTTER than usual`;
                     const messageDiff = tempDifference < 0 ? 'less' : 'more';
+                    const sameClass = tempDifference === 0 ? 'text-white' : '';
 
                     container.innerHTML += `
                         <div class="bg-white p-6 rounded-lg shadow-md">
@@ -68,12 +69,12 @@
                                     <tr>
                                         <td class="p-2 border border-gray-300 text-center">Corrected % (Target)</td>                    
                                         <td class="p-2 border border-gray-300 text-center">${correctionPercentage}%</td>                    
-                                        <td class="p-2 border border-gray-300 text-center">${Math.abs((100 - correctionPercentage).toFixed(1))}% ${messageDiff} than usual</td>                    
+                                        <td class="p-2 border border-gray-300 text-center ${sameClass}">${Math.abs((100 - correctionPercentage).toFixed(1))}% ${messageDiff}</td>                    
                                     </tr>
                                     <tr>
                                         <td class="p-2 border border-gray-300 text-center">Corrected Gallons (Target)</td>                    
-                                        <td class="p-2 border border-gray-300 text-center ${tempDifference < 0 ? 'bg-blue-500' : 'bg-red-500'} text-white text-2xl font-bold">${targetGallons.toLocaleString('en-US')}</td>                    
-                                        <td class="p-2 border border-gray-300 text-center">${gallonsDifference} gal. ${messageDiff} than usual</td>                    
+                                        <td class="p-2 border border-gray-300 text-center ${tempDifference === 0 ? 'bg-green-500' : tempDifference < 0 ? 'bg-blue-500' : 'bg-red-500'} text-white text-2xl font-bold">${targetGallons.toLocaleString('en-US')}</td>                    
+                                        <td class="p-2 border border-gray-300 text-center ${sameClass}">${gallonsDifference} gal. ${messageDiff} than usual</td>                    
                                     </tr>
                                 </tbody>
                             </table>
@@ -82,8 +83,8 @@
                                 <div class="flex">
                                     <div class="py-1 mr-4">${icon}</div>
                                     <div>
-                                        <p class="font-bold text-lg">Today, our Asphalt temperature is ${message} than usual</p>
-                                        <p class="text-lg">If you usually load 6000 gallons @ ${product.usual_temp}&#176;F and today's temperature is ${product.todays_temp}&#176;F, 
+                                        <p class="font-bold text-lg">Today, our Asphalt temperature is ${message}</p>
+                                        <p class="text-lg">If you usually load 6,000 gallons @ ${product.usual_temp}&#176;F and today's temperature is ${product.todays_temp}&#176;F, 
                                             you should target ${correctionPercentage}% of usual, which would put your target at ${targetGallons.toLocaleString('en-US')} gallons.</p>
                                     </div>
                                 </div>
