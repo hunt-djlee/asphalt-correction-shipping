@@ -16,11 +16,16 @@
             try {
                 const response = await fetch('https://prod-14.northcentralus.logic.azure.com:443/workflows/d999368e6fd940ecbdbd9127bb7e41e9/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=c2hjIroIc6pJPm0TmHeJHsc4R8Wc6bK2KdhRZuffeN8');
                 const data = await response.json();
+                const table1 = data.Table1[0];
+                const dynamicKey = Object.keys(table1)[0];
+                const jsonString = table1[dynamicKey];
+                const parsedData = JSON.parse(jsonString);
+                const products = parsedData.products;
 
                 const container = document.getElementById('product-container');
                 container.innerHTML = ''; // Clear existing content
 
-                data.products.forEach(product => {
+                products.forEach(product => {
                     const tempDifference = product.todays_temp - product.usual_temp;
                     const targetGallons = Math.round(6000 * (product.usual_temp_correction_factor / product.todays_temp_correction_factor));
                     const correctionPercentage = ((product.usual_temp_correction_factor / product.todays_temp_correction_factor) * 100).toFixed(1);
