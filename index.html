@@ -27,8 +27,8 @@
                     const gallonsDifference = Math.abs(6000 - targetGallons);
 
                     const bgColor = tempDifference === 0 ? 'bg-green-100 border-green-500 text-green-900' : tempDifference < 0 ? 'bg-blue-100 border-blue-500 text-blue-900' : 'bg-red-100 border-red-500 text-red-600';
-                    const icon = tempDifference === 0 ? '<i class="fa-solid fa-circle-arrow-down fa-lg text-green-500"></i>' : tempDifference < 0 
-                        ? '<i class="fa-solid fa-equals fa-lg text-blue-500"></i>' 
+                    const icon = tempDifference === 0 ? '<i class="fa-solid fa-equals fa-lg text-green-500"></i>' : tempDifference < 0 
+                        ? '<i class="fa-solid fa-circle-arrow-down fa-lg text-blue-500"></i>' 
                         : '<i class="fa-solid fa-circle-arrow-up fa-lg text-red-500"></i>';
                     const message = tempDifference === 0 ? 'NORMAL' : tempDifference < 0 
                         ? `COLDER than usual` 
