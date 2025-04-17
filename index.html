@@ -214,14 +214,22 @@
         return [...topThree, ...waiting];
       }
 
+      function getUrlParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+
       function renderTable(title, records, elementId, isFlux = false) {
+        const showDetails = getUrlParam("details") !== null && getUrlParam("details") !== "";
+
         const headers = isFlux
-          ? ["Driver Name", "Carrier", "Time IN", "Status"]
-          : ["Driver Name", "Carrier", "Product Variety", "Rack", "Time IN", "Status"];
+          ? showDetails ? ["Driver Name", "Carrier", "Time IN", "Status"] : ["Ticket #", "Time IN", "Status"]
+          : showDetails ? ["Driver Name", "Carrier", "Product Variety", "Rack", "Time IN", "Status"] : ["Ticket #", "Product Variety", "Rack", "Time IN", "Status"];
 
         const rows = records
           .map((r) => {
             if (isFlux) {
+              if (showDetails) {
               return `
                         <tr class="${
                           r.Status === "Currently Loading"
@@ -236,7 +244,24 @@
                         <td class="p-2 border border-gray-300">${r.Status}</td>
                         </tr>
                     `;
+                      }
+                      else {
+                        return `
+                        <tr class="${
+                          r.Status === "Currently Loading"
+                            ? "bg-green-500 font-bold"
+                            : ""
+                        }">
+                        <td class="p-2 border border-gray-300 text-sm">${r.WEIGH_TICKET_ID}</td>
+                        <td class="p-2 border border-gray-300">${formatDate(
+                          r.VehicleDate
+                        )}</td>
+                        <td class="p-2 border border-gray-300">${r.Status}</td>
+                        </tr>
+                    `;
+                      }
             } else {
+              if (showDetails) {
               return `
                         <tr class="${
                           r.Status === "Currently Loading"
@@ -255,6 +280,26 @@
                         <td class="p-2 border border-gray-300">${r.Status}</td>
                         </tr>
                     `;
+                      }
+                      else {
+                        return `
+                        <tr class="${
+                          r.Status === "Currently Loading"
+                            ? "bg-green-500 font-bold"
+                            : ""
+                        }">
+                        <td class="p-2 border border-gray-300 text-sm">${r.WEIGH_TICKET_ID}</td>
+                        <td class="p-2 border border-gray-300">${
+                          r.ProductVariety
+                        }</td>
+                        <td class="p-2 border border-gray-300">${r.Rack}</td>
+                        <td class="p-2 border border-gray-300">${formatDate(
+                          r.VehicleDate
+                        )}</td>
+                        <td class="p-2 border border-gray-300">${r.Status}</td>
+                        </tr>
+                    `;  
+                      }
             }
           })
           .join("");
