@@ -90,8 +90,8 @@
               tempDifference === 0
                 ? "NORMAL"
                 : tempDifference < 0
-                ? `COLDER than usual`
-                : `HOTTER than usual`;
+                ? `COLDER than typical`
+                : `HOTTER than typical`;
             const messageDiff = tempDifference < 0 ? "less" : "more";
             const sameClass = tempDifference === 0 ? "text-white" : "";
 
@@ -110,7 +110,7 @@
                                         <td class="p-2 border border-gray-300 text-center">Correction Factor</td>                    
                                     </tr>
                                     <tr>
-                                        <td class="p-2 border border-gray-300 text-center font-bold">Usual Loading Temp</td>                    
+                                        <td class="p-2 border border-gray-300 text-center font-bold">Typical Loading Temp</td>                    
                                         <td class="p-2 border border-gray-300 text-center bg-yellow-50 font-bold">${
                                           product.usual_temp
                                         }</td>                    
@@ -119,7 +119,7 @@
                                         }</td>                    
                                     </tr>
                                     <tr>
-                                        <td class="p-2 border border-gray-300 text-center font-bold">Usual Gallons</td>                    
+                                        <td class="p-2 border border-gray-300 text-center font-bold">Typical Gallons</td>                    
                                         <td class="p-2 border border-gray-300 text-center bg-yellow-50 font-bold">6,000</td>                    
                                         <td class="p-2 border border-gray-300 text-center">${
                                           product.todays_temp_correction_factor
@@ -143,7 +143,7 @@
                                         } text-white text-2xl font-bold">${targetGallons.toLocaleString(
               "en-US"
             )}</td>                    
-                                        <td class="p-2 border border-gray-300 text-center ${sameClass}">${gallonsDifference} gal. ${messageDiff} than usual</td>                    
+                                        <td class="p-2 border border-gray-300 text-center ${sameClass}">${gallonsDifference} gal. ${messageDiff} than typical</td>                    
                                     </tr>
                                 </tbody>
                             </table>
@@ -153,12 +153,12 @@
                                     <div class="py-1 mr-4">${icon}</div>
                                     <div>
                                         <p class="font-bold text-lg">Today, our Asphalt temperature is ${message}</p>
-                                        <p class="text-lg">If you usually load 6,000 gallons @ ${
+                                        <p class="text-lg">If you typically load 6,000 gallons @ ${
                                           product.usual_temp
                                         }&#176;F and today's temperature is ${
               product.todays_temp
             }&#176;F, 
-                                            you should target ${correctionPercentage}% of usual, which would put your target at ${targetGallons.toLocaleString(
+                                            you should target ${correctionPercentage}% of typical, which would put your target at ${targetGallons.toLocaleString(
               "en-US"
             )} gallons.</p>
                                     </div>
@@ -229,8 +229,8 @@
         const showDetails = getUrlParam("details") !== null && getUrlParam("details") !== "";
 
         const headers = isFlux
-          ? showDetails ? ["Driver Name", "Carrier", "Time IN", "Status"] : ["Ticket #", "Time IN", "Status"]
-          : showDetails ? ["Driver Name", "Carrier", "Product Variety", "Rack", "Time IN", "Status"] : ["Ticket #", "Product Variety", "Rack", "Time IN", "Status"];
+          ? showDetails ? ["Driver Name", "Carrier", "Rack", "Time IN", "Status"] : ["Ticket #", "Rack", "Time IN", "Status"]
+          : showDetails ? ["Driver Name", "Carrier", "Product Variety", "Rack", "Time IN", "Status"] : ["Ticket #", "Rack", "Time IN", "Status"];
 
         const rows = records
           .map((r) => {
@@ -244,6 +244,7 @@
                         }">
                         <td class="p-2 border border-gray-300 text-sm">${r.NAME_1}</td>
                         <td class="p-2 border border-gray-300 text-sm">${r.CARRIER}</td>
+                        <td class="p-2 border border-gray-300">Double Bay-West</td>
                         <td class="p-2 border border-gray-300">${formatDate(
                           r.VehicleDate
                         )}</td>
@@ -259,6 +260,7 @@
                             : ""
                         }">
                         <td class="p-2 border border-gray-300 text-sm">${r.WEIGH_TICKET_ID}</td>
+                        <td class="p-2 border border-gray-300">Double Bay-West</td>
                         <td class="p-2 border border-gray-300">${formatDate(
                           r.VehicleDate
                         )}</td>
@@ -295,9 +297,6 @@
                             : ""
                         }">
                         <td class="p-2 border border-gray-300 text-sm">${r.WEIGH_TICKET_ID}</td>
-                        <td class="p-2 border border-gray-300">${
-                          r.ProductVariety
-                        }</td>
                         <td class="p-2 border border-gray-300">${r.Rack}</td>
                         <td class="p-2 border border-gray-300">${formatDate(
                           r.VehicleDate
